@@ -1,33 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <windows.h>
+#include "main.h"
 
-#define DOS_HEADER_OFFSET 0x3C
-#define SUBSYSTEM_OFFSET 0x22
-
-//32-Bit Checker(Bool)
-#define Is32Processer(m) (m == IMAGE_FILE_MACHINE_I386)
-
-//Subsystem Case(Print)
-#define SubsystemCase(t) 	case t: { \
-											printf(#t"\n"); \
-											break; \
-										}
-//Machine Type Check(Print)
-#define MachineCase(t) 	case t: { \
-										printf(#t); \
-										break; \
-									}
-//Print Subsystem Number (Print)
-#define PrintSubsystem(s, c) printf("%d: %s%s\n", s, #s, c);
-
-//Subsystem Check Case (Print)
-#define SubsystemCheck(s) case s: { \
-											printf("Selected Subsystem: %s\n", #s); \
-											break; \
-										}
-
-int FileOpen(char* lp_fileDir, FILE** lp_output) {
+int FileOpen (char* lp_fileDir, FILE** lp_output) {
 	FILE* lv_file;
 	WORD lv_pe;
 	
@@ -140,7 +113,7 @@ int Get_ImageOptionalHeader_Subsystem (IMAGE_OPTIONAL_HEADER64* lp_header) {
 	return 0;
 }
 
-int UserInput_SubsystemIndex(int* lp_output) {
+int UserInput_SubsystemIndex (int* lp_output) {
 	char lv_subsystem_c[100];
 	int lv_subsystem_i;
 	CONSOLE_SCREEN_BUFFER_INFO lv_csbi; //For Console Coordinate
@@ -211,14 +184,9 @@ int Write_ImageOptionalHeader (FILE* lp_file, DWORD lp_nt_offset, IMAGE_OPTIONAL
 	puts("\nOverwrite Success.");
 	return 0;
 }
-void Exit (FILE *lp_file) {
-	fclose(lp_file);
-	system("pause");
-	exit(0);
-}
 
 int main (int argc, char* argv[]) {
-	FILE *lv_file;
+	FILE *lv_file = NULL;
 	DWORD lv_nt_offset;
 	WORD lv_machine;
 	IMAGE_OPTIONAL_HEADER64 lv_optional_header;
@@ -226,7 +194,7 @@ int main (int argc, char* argv[]) {
 	int lv_input_subsystem;
 	
 	if (FileOpen(argv[1], &lv_file)) {
-		Exit(lv_file);
+		goto END;
 	}
 	
 	Read_NTHeader_Offset(lv_file, &lv_nt_offset);
@@ -242,8 +210,11 @@ int main (int argc, char* argv[]) {
 	Set_ImageOptionalHeader_Subsystem(&lv_optional_header, lv_input_subsystem);
 
 	if (Write_ImageOptionalHeader(lv_file, lv_nt_offset, &lv_optional_header, lv_header_size)) {
-		Exit(lv_file);
+		goto END;
 	}
 	
-	Exit(lv_file);
+	END:
+	fclose(lv_file);
+	system("pause");
+	return 0;
 }
