@@ -1,5 +1,5 @@
-# Subsystem
-Portable-Execute(PE) .exe File Subsystem Binary Changer
+# Window Executable File Subsystem Changer
+Window Executable File(.exe) Subsystem Binary Changer
 
 ## [Description]
 
