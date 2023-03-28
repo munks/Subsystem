@@ -1,13 +1,13 @@
 #include "main.h"
 
-int FileOpen (char* lp_fileDir, FILE** lp_output) {
+int FileOpen (wchar_t* lp_fileDir, FILE** lp_output) {
 	FILE* lv_file;
 	WORD lv_pe;
 	
 	//Open File
-	printf("Open File: %s\n", lp_fileDir);
+	wprintf(L"Open File: %ls\n", lp_fileDir);
 	
-	lv_file = fopen(lp_fileDir, "r+b");
+	lv_file = _wfopen(lp_fileDir, L"r+b");
 	
 	if (lv_file == NULL) {
 		perror("Could Not Open File. Error Code");
@@ -16,7 +16,7 @@ int FileOpen (char* lp_fileDir, FILE** lp_output) {
 	}
 	
 	//Check Format (File Name)
-	if (strstr(lp_fileDir, ".exe") == NULL) {
+	if (wcsstr(lp_fileDir, L".exe") == NULL) {
 		puts("File is not PE Format.");
 		fclose(lv_file);
 		return 1;
@@ -185,13 +185,15 @@ int Write_ImageOptionalHeader (FILE* lp_file, DWORD lp_nt_offset, IMAGE_OPTIONAL
 	return 0;
 }
 
-int main (int argc, char* argv[]) {
+int wmain (int argc, wchar_t* argv[]) {
 	FILE *lv_file = NULL;
 	DWORD lv_nt_offset;
 	WORD lv_machine;
 	IMAGE_OPTIONAL_HEADER64 lv_optional_header;
 	int lv_header_size;
 	int lv_input_subsystem;
+	
+	setlocale(LC_ALL, "");
 	
 	if (FileOpen(argv[1], &lv_file)) {
 		goto END;

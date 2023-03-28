@@ -4,6 +4,7 @@
 	//Include
 	#include <stdio.h>
 	#include <stdlib.h>
+	#include <locale.h>
 	#include <windows.h>
 	
 	//Define Const
@@ -34,39 +35,39 @@
 	
 	//Function
 	int FileOpen (
-		char*		lp_fileDir,
-		FILE**		lp_output
+		wchar_t*	lp_fileDir, //_In_
+		FILE**		lp_output //_Out_
 	);
 	int Read_NTHeader_Offset (
-		FILE*			lp_file,
-		DWORD*	lp_output
+		FILE*			lp_file, //_InOut_
+		DWORD*	lp_output //_Out_
 	);
 	int Read_ArchitectureMachine (
-		FILE*			lp_file,
-		DWORD	lp_nt_offset,
-		WORD*		lp_output
+		FILE*			lp_file, //_InOut_
+		DWORD	lp_nt_offset, //_In_
+		WORD*		lp_output //_Out_
 	);
 	int Read_ImageOptionalHeader (
-		FILE*			lp_file,
-		DWORD	lp_nt_offset,
-		WORD		lp_machine,
-		IMAGE_OPTIONAL_HEADER64*	lp_output_header,
-		int*			lp_output_size
+		FILE*			lp_file, //_InOut_
+		DWORD	lp_nt_offset, //_In_
+		WORD		lp_machine, //_In_
+		IMAGE_OPTIONAL_HEADER64*	lp_output_header, //_Out_
+		int*			lp_output_size //_Out_
 	);
 	int Get_ImageOptionalHeader_Subsystem (
-		IMAGE_OPTIONAL_HEADER64*	lp_header
+		IMAGE_OPTIONAL_HEADER64*	lp_header //_In_
 	);
 	int UserInput_SubsystemIndex (
-		int*			lp_output
+		int*			lp_output //_Out_
 	);
 	int Set_ImageOptionalHeader_Subsystem (
-		IMAGE_OPTIONAL_HEADER64*	lp_header,
-		int			lp_subsystem
+		IMAGE_OPTIONAL_HEADER64*	lp_header, //_Out_
+		int			lp_subsystem //_In_
 	);
 	int Write_ImageOptionalHeader (
-		FILE*			lp_file,
-		DWORD	lp_nt_offset,
-		IMAGE_OPTIONAL_HEADER64*	lp_write_header,
-		int			lp_write_size
+		FILE*			lp_file, //_InOut_
+		DWORD	lp_nt_offset, //_In_
+		IMAGE_OPTIONAL_HEADER64*	lp_write_header, //_In_
+		int			lp_write_size //_In_
 	);
 #endif
