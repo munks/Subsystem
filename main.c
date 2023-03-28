@@ -67,8 +67,7 @@ int Read_ArchitectureMachine (FILE* lp_file, DWORD lp_nt_offset, WORD* lp_output
 			return 1;
 		}
 	}
-	puts(")");
-	
+	printf(" | %s)\n", Is32Processer(lv_machine) ? "32-bit" : "64-bit");
 	*lp_output = lv_machine;
 	return 0;
 }
