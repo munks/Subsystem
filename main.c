@@ -194,6 +194,11 @@ int wmain (int argc, wchar_t* argv[]) {
 	
 	setlocale(LC_ALL, "");
 	
+	if (argc == 1) {
+		wprintf(L"Usage: %ls [Path]\n", wcsrchr(argv[0], L'\\') + 1);
+		goto END;
+	}
+	
 	if (FileOpen(argv[1], &lv_file)) {
 		goto END;
 	}
